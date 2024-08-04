@@ -17,6 +17,13 @@ function App() {
     fetchProducts();
   }, []);
 
+const pageHandler =(selectedPage)=>{
+  if(selectedPage>1 && selectedPage <= products.length/10 && selectedPage !=pages){
+
+    setPages(selectedPage)
+  }
+}
+
   return (
     <>
       <div>
@@ -32,14 +39,17 @@ function App() {
             })}
           </div>
         )}
-        {products.length > 0 && (<div className="pagination"> 
-          <span>Prev</span>
-          {[...Array(products.length /12)].map((_,i)=>{
-            return <span key={i}>{i+1}</span>
-          })}
-          
-          <span>Next</span>
-        </div>)}
+        {products.length > 0 && (
+          <div className="pagination">
+            <span onClick={()=>pageHandler(pages-1)}>Prev</span>
+
+            {[...Array(products.length / 10)].map((_, i) => {
+              return <span className={pages===i+1 ? "pagination__selected":""} onClick={()=>pageHandler(i+1)} key={i}>{i + 1}</span>;
+            })}
+
+            <span onClick={()=>pageHandler(pages+1)}>Next</span>
+          </div>
+        )}
       </div>
     </>
   );
